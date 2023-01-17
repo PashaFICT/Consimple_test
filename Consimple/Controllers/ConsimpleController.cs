@@ -12,7 +12,7 @@ using static Consimple.Model.ConsimpleResult;
 
 namespace Consimple.Controllers
 {
-    public class Person
+    public class BirhdayPerson
     {
         public string Login { get; set; }
         public string Password { get; set; }
@@ -24,8 +24,8 @@ namespace Consimple.Controllers
     public class ConsimpleController : ControllerBase
     {
         [HttpPost]
-        [Route("Apex/GetBirthdatPersons")]
-        public async Task<IActionResult> GetBirthdayPersons([FromBody]Person value)
+        [Route("GetBirthdatPersons")]
+        public async Task<IActionResult> GetBirthdayPersons([FromBody]BirhdayPerson value)
         {
             DateTime dateOfBirthday;
             string login = "";
@@ -84,7 +84,7 @@ namespace Consimple.Controllers
             public string CountDay { get; set; }
         }
         [HttpPost]
-        [Route("Apex/GetLastBuyers")]
+        [Route("GetLastBuyers")]
         public async Task<IActionResult> GetLastBuyers([FromBody] LastBuyers value)
         {
             int countDay;
@@ -144,7 +144,7 @@ namespace Consimple.Controllers
             public string ClientID { get; set; }
         }
         [HttpPost]
-        [Route("Apex/GetCategories")]
+        [Route("GetCategories")]
         public async Task<IActionResult> GetCategories([FromBody]Categories value)
         {
             int clientId;

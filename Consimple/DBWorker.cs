@@ -9,7 +9,7 @@ namespace Consimple
 {
     public class DBWorker
     {
-        private static string connectionString = @"Server=PASHA\SQLEXPRESS;Database=Consimple_test;Integrated Security=False";//;Trusted_Connection=True";
+        private static string connectionString = @"Server=PASHA\SQLEXPRESS;Database=Consimple_test;Trusted_Connection=True";
 
         public static DataTable ExecQuery(string query)
         {

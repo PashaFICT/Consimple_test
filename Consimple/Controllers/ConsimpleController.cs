@@ -77,21 +77,26 @@ namespace Consimple.Controllers
             }
             return list;
         }
+        public class LastBuyers
+        {
+            public string Login { get; set; }
+            public string Password { get; set; }
+            public string CountDay { get; set; }
+        }
         [HttpPost]
         [Route("Apex/GetLastBuyers")]
-        public async Task<IActionResult> GetLastBuyers(JObject value)
+        public async Task<IActionResult> GetLastBuyers([FromBody] LastBuyers value)
         {
             int countDay;
             string login = "";
             string pass = "";
             try
             {
-                dynamic json = value;
                 try
                 {
-                    login = json.login;
-                    pass = json.password;
-                    countDay = Convert.ToInt32(json.countDay);
+                    login = value.Login;
+                    pass = value.Password;
+                    countDay = Convert.ToInt32(value.CountDay);
                 }
                 catch (Exception ex)
                 {
@@ -132,22 +137,26 @@ namespace Consimple.Controllers
             }
             return list;
         }
-
+        public class Categories
+        {
+            public string Login { get; set; }
+            public string Password { get; set; }
+            public string ClientID { get; set; }
+        }
         [HttpPost]
         [Route("Apex/GetCategories")]
-        public async Task<IActionResult> GetCategories(JObject value)
+        public async Task<IActionResult> GetCategories([FromBody]Categories value)
         {
             int clientId;
             string login = "";
             string pass = "";
             try
             {
-                dynamic json = value;
                 try
                 {
-                    login = json.login;
-                    pass = json.password;
-                    clientId = Convert.ToInt32(json.clientId);
+                    login = value.Login;
+                    pass = value.Password;
+                    clientId = Convert.ToInt32(value.ClientID);
                 }
                 catch (Exception ex)
                 {

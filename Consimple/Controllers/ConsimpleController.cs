@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using Newtonsoft.Json.Linq;
 using System;
@@ -14,8 +15,6 @@ namespace Consimple.Controllers
 {
     public class BirhdayPerson
     {
-        public string Login { get; set; }
-        public string Password { get; set; }
         public string BirthdayDate { get; set; }
     }
     [ApiController]
@@ -23,37 +22,29 @@ namespace Consimple.Controllers
    
     public class ConsimpleController : ControllerBase
     {
+        [Authorize]
         [HttpPost]
         [Route("GetBirthdatPersons")]
         public async Task<IActionResult> GetBirthdayPersons([FromBody]BirhdayPerson value)
         {
             DateTime dateOfBirthday;
-            string login = "";
-            string pass = "";
             try
             {
                
                 try
                 {
-                    login = value.Login;
-                    pass = value.Password;
                     dateOfBirthday = Convert.ToDateTime(value.BirthdayDate);
                 }
                 catch (Exception ex)
                 {
                     throw new Exception(@"Parameterts error:" + ex.Message);
                 }
-                bool check = Utils.CheckUser(login, pass);
-                if (!check)
-                {
-                    return Unauthorized();
-                }
                 List<ClientDto> list = GetBirthdatPersonsRows(dateOfBirthday);
                 return Ok(CheckClientResult.Ok(list));
             }
             catch (Exception ex)
             {
-                Utils.SaveError("GetBirthdayPersons", ex, 0, login);
+                Utils.SaveError("GetBirthdayPersons", ex, 0, User.Identity.Name);
                 return BadRequest();
             }
         }
@@ -79,33 +70,23 @@ namespace Consimple.Controllers
         }
         public class LastBuyers
         {
-            public string Login { get; set; }
-            public string Password { get; set; }
             public string CountDay { get; set; }
         }
+        [Authorize]
         [HttpPost]
         [Route("GetLastBuyers")]
         public async Task<IActionResult> GetLastBuyers([FromBody] LastBuyers value)
         {
             int countDay;
-            string login = "";
-            string pass = "";
             try
             {
                 try
                 {
-                    login = value.Login;
-                    pass = value.Password;
                     countDay = Convert.ToInt32(value.CountDay);
                 }
                 catch (Exception ex)
                 {
                     throw new Exception(@"Parameterts error:" + ex.Message);
-                }
-                bool check = Utils.CheckUser(login, pass);
-                if (!check)
-                {
-                    return Unauthorized();
                 }
                 DateTime dateTime = DateTime.Now.AddDays(-countDay);
                 List<ClientDto> list = GetLastBuyersRows(dateTime);
@@ -113,7 +94,7 @@ namespace Consimple.Controllers
             }
             catch (Exception ex)
             {
-                Utils.SaveError("GetLastBuyers", ex, 0, login);
+                Utils.SaveError("GetLastBuyers", ex, 0, User.Identity.Name);
                 return BadRequest();
             }
         }
@@ -139,40 +120,30 @@ namespace Consimple.Controllers
         }
         public class Categories
         {
-            public string Login { get; set; }
-            public string Password { get; set; }
             public string ClientID { get; set; }
         }
+        [Authorize]
         [HttpPost]
         [Route("GetCategories")]
         public async Task<IActionResult> GetCategories([FromBody]Categories value)
         {
             int clientId;
-            string login = "";
-            string pass = "";
             try
             {
                 try
                 {
-                    login = value.Login;
-                    pass = value.Password;
                     clientId = Convert.ToInt32(value.ClientID);
                 }
                 catch (Exception ex)
                 {
                     throw new Exception(@"Parameterts error:" + ex.Message);
                 }
-                bool check = Utils.CheckUser(login, pass);
-                if (!check)
-                {
-                    return Unauthorized();
-                }
                 List<ClientCategoriesDto> list = GetCategoriesRows(clientId);
                 return Ok(CheckClientResult.Ok(list));
             }
             catch (Exception ex)
             {
-                Utils.SaveError("GetCategories", ex, 0, login);
+                Utils.SaveError("GetCategories", ex, 0, User.Identity.Name);
                 return BadRequest();
             }
         }

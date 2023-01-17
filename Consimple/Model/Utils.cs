@@ -10,54 +10,33 @@ namespace Consimple
 {
     public class Utils
     {
-        internal static bool CheckUser(string login, string pass)
-        {
-            bool res = false;
-            string password = EncryptPassword(login, pass);
+        //internal static bool CheckUser(string login, string pass)
+        //{
+        //    bool res = false;
+        //    string password = EncryptPassword(login, pass);
 
-            string sql = $"select * from Users where Login=@Login and Password =@Password";
-            List<SqlParameter> parameters = new List<SqlParameter>();
-            parameters.Add(new SqlParameter("@Login", login));
-            parameters.Add(new SqlParameter("@Password", password));
-            if (DBWorker.ExecQueryWithParameters(sql, parameters).Rows.Count != 0)
-            {
-                res = true;
-            }
+        //    string sql = $"select * from Users where Login=@Login and Password =@Password";
+        //    List<SqlParameter> parameters = new List<SqlParameter>();
+        //    parameters.Add(new SqlParameter("@Login", login));
+        //    parameters.Add(new SqlParameter("@Password", password));
+        //    if (DBWorker.ExecQueryWithParameters(sql, parameters).Rows.Count != 0)
+        //    {
+        //        res = true;
+        //    }
 
-            return res;
-        }
+        //    return res;
+        //}
 
-        private static string EncryptPassword(string userName, string password)
-        {
-            string tmpPassword = userName.ToLower() + password;
+        //private static string EncryptPassword(string userName, string password)
+        //{
+        //    string tmpPassword = userName.ToLower() + password;
 
-            UTF8Encoding textConverter = new UTF8Encoding();
-            byte[] passBytes = textConverter.GetBytes(tmpPassword);
+        //    UTF8Encoding textConverter = new UTF8Encoding();
+        //    byte[] passBytes = textConverter.GetBytes(tmpPassword);
 
-            string res = Convert.ToBase64String(new SHA384Managed().ComputeHash(passBytes));
-            return res;
-        }
-
-        public static bool GetBoolValue(object value)
-        {
-            if (value == null || value == DBNull.Value)
-                return false;
-            return (bool)value;
-        }
-
-        public static int GetIntValue(object value)
-        {
-            if (value == null || value == DBNull.Value)
-                return 0;
-            return (int)value;
-        }
-
-        public static string GetStringValue(object value)
-        {
-            if (value == null)
-                return string.Empty;
-            return value.ToString();
-        }
+        //    string res = Convert.ToBase64String(new SHA384Managed().ComputeHash(passBytes));
+        //    return res;
+        //}
 
         public static void SaveError(string methodName, Exception ex, long userID, string login)
         {

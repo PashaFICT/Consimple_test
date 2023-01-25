@@ -64,5 +64,19 @@ namespace Consimple.Controllers
 
             return null;
         }
+        private class People
+        {
+            public string Name { get; set; }
+        }
+        [HttpPost("/getAll")]
+        public IActionResult GetAll()
+        {
+            List<People> p = new List<People>();
+            foreach(var a in people)
+            {
+                p.Add(new People() { Name = a.Login });
+            }
+            return Ok(p);
+        }
     }
 }

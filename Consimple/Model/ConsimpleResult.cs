@@ -23,6 +23,7 @@ namespace Consimple.Model
         {
             public List<ClientDto> InfoClient { get; set; }
             public List<ClientCategoriesDto> InfoCategory { get; set; }
+            public List<LastBuyersDto> InfoLastBuyers { get; set; }
             public int Result { get; set; }
             public string Comment { get; set; }
 
@@ -43,6 +44,23 @@ namespace Consimple.Model
                 if (clients.Count != 0)
                 {
                     checkClient.InfoClient = clients;
+                    checkClient.Result = (int)ResultType.Ok;
+                    checkClient.Comment = ResultCode.code[0];
+                }
+                else
+                {
+                    checkClient.Result = (int)ResultType.Error;
+                    checkClient.Comment = ResultCode.code[5];
+                }
+
+                return checkClient;
+            }
+            public static CheckClientResult Ok(List<LastBuyersDto> clients)
+            {
+                CheckClientResult checkClient = new CheckClientResult();
+                if (clients.Count != 0)
+                {
+                    checkClient.InfoLastBuyers = clients;
                     checkClient.Result = (int)ResultType.Ok;
                     checkClient.Comment = ResultCode.code[0];
                 }

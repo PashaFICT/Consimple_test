@@ -12,11 +12,16 @@ namespace Consimple.Controllers
 {
     public class AccountController : Controller
     {
-        private List<Person> people = new List<Person>
+        private readonly ApplicationContext context;
+        public AccountController(ApplicationContext _context)
         {
-            new Person {Login="admin@gmail.com", Password="12345", Role = "admin" },
-            new Person { Login="qwerty@gmail.com", Password="55555", Role = "user" }
-        };
+            context = _context;
+        }
+        //private List<Person> people = new List<Person>
+        //{
+        //    new Person {Login="admin@gmail.com", Password="12345", Role = "admin" },
+        //    new Person { Login="qwerty@gmail.com", Password="55555", Role = "user" }
+        //};
 
         [HttpPost("/token")]
         public IActionResult Token(string username, string password)
@@ -48,13 +53,14 @@ namespace Consimple.Controllers
 
         private ClaimsIdentity GetIdentity(string username, string password)
         {
-            Person person = people.FirstOrDefault(x => x.Login == username && x.Password == password);
-            if (person != null)
+            //Person person = people.FirstOrDefault(x => x.Login == username && x.Password == password);
+            User user = context.Users.FirstOrDefault(x => x.Login == username && x.Password == password);
+            if (user != null)
             {
                 var claims = new List<Claim>
                 {
-                    new Claim(ClaimsIdentity.DefaultNameClaimType, person.Login),
-                    new Claim(ClaimsIdentity.DefaultRoleClaimType, person.Role)
+                    new Claim(ClaimsIdentity.DefaultNameClaimType, user.Login),
+                    new Claim(ClaimsIdentity.DefaultRoleClaimType, context.Roles.FirstOrDefault(t => t.ID == user.RoleID).ToString())
                 };
                 ClaimsIdentity claimsIdentity =
                 new ClaimsIdentity(claims, "Token", ClaimsIdentity.DefaultNameClaimType,
@@ -71,10 +77,10 @@ namespace Consimple.Controllers
         [HttpPost("/getAll")]
         public IActionResult GetAll()
         {
-            List<People> p = new List<People>();
-            foreach(var a in people)
+            List<User> p = new List<User>();
+            foreach (var a in context.Users)
             {
-                p.Add(new People() { Name = a.Login });
+                p.Add(new User { Login = a.Login });
             }
             return Ok(p);
         }

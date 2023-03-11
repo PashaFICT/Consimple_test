@@ -40,7 +40,7 @@ namespace Consimple
 
         public static void SaveError(string methodName, Exception ex, long userID, string login)
         {
-            using (SqlConnection connection = new SqlConnection(@"Server=PASHA\SQLEXPRESS;Database=Consimple_test;Trusted_Connection=True"))
+            using (SqlConnection connection = new SqlConnection(@"Server=localhost\MSSQLSERVER01;Database=Consimple;Trusted_Connection=True;"))
             {
                 connection.Open();
                 string query = "insert into ErrorMessages(ErrorMessage,Login,UserID) values(@ErrorMessage, @Login,@UserID)";

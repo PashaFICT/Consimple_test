@@ -17,7 +17,7 @@ namespace Consimple.Model
         {
             public int ID { get; set; }
             public string Category { get; set; }
-            public int Count { get; set; }
+            public decimal Count { get; set; }
         }
     }
 }
